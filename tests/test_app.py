@@ -47,3 +47,26 @@ def test_every_slider_at_its_min_and_max_does_not_raise():
                 value = int(value)
             slider.set_value(value).run(timeout=TIMEOUT)
             assert not at.exception, (label, edge, [str(e) for e in at.exception])
+
+
+def _app_with(**state) -> AppTest:
+    at = AppTest.from_file(APP_PATH)
+    at.run(timeout=TIMEOUT)
+    for key, value in state.items():
+        at.session_state[key] = value
+    at.run(timeout=TIMEOUT)
+    assert not at.exception, [str(e) for e in at.exception]
+    return at
+
+
+def test_closed_group_without_means_shows_the_multiple_fixed_points_hint():
+    """Ring, alle Firmen geschockt mit s = b: geschlossene Gruppe ohne externe Mittel, größter und kleinster Fixpunkt unterscheiden sich (Lücke 1,0). Die App sagt es, statt Eindeutigkeit zu zeigen."""
+    at = _app_with(kind_radio="ring", n_slider=10, b_slider=0.1, k_slider=10, s_slider=0.1)
+    assert any("Mehrere Verrechnungsvektoren" in i.value for i in at.info)
+    assert at.metric[3].value == "mehrere"
+
+
+def test_default_net_shows_no_multiple_fixed_points_hint_and_no_iteration_warning():
+    at = _fresh_app()
+    assert not any("Mehrere Verrechnungsvektoren" in i.value for i in at.info)
+    assert not any("Höchstwert" in w.value for w in at.warning)

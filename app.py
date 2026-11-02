@@ -142,6 +142,12 @@ st.plotly_chart(build_network(a.net.w, a.failed, a.hit, a.p, a.L), width="stretc
 st.caption("Rot: fällt aus (zahlt weniger als die Schuld), grün: zahlt voll, oranger Rand: geschockt. Die Anordnung auf dem Kreis folgt nur der Nummerierung.")
 if a.residual > 1e-9:
     st.error("Die Verrechnung erfüllt die Fixpunktgleichung nicht.")
+if a.gap >= 1e-9:
+    st.info(f"**Mehrere Verrechnungsvektoren:** Gezeigt wird der größte (Iteration von p = L aus); der kleinste liegt um {a.gap:.1e} tiefer. "
+            "Das tritt auf, wenn eine geschlossene Gruppe von Firmen keine externen Mittel mehr hat, zum Beispiel alle Firmen eines Rings, geschockt mit s = b.")
+if a.steps >= C.MAX_ITER:
+    st.warning(f"Die Iteration hat den Höchstwert von {C.MAX_ITER:,} Schritten erreicht und nur eine Näherung geliefert (Abweichung {a.residual:.1e}). "
+               "Das passiert dicht an einer Schwelle des Netzes; der Wert ist dort nicht auf die letzte Stelle genau.".replace(",", "."))
 with st.expander("Zahlung je Firma"):
     st.plotly_chart(build_payments(a.p, a.L, a.hit), width="stretch", key="payments_chart")
     st.caption("Zahlung im Verhältnis zur Schuld; geschockte Firmen orange, ausgefallene rot.")

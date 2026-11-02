@@ -94,3 +94,12 @@ def test_max_iterations_bound_is_respected():
     _, _, steps = A.clear(w, np.array([0.2, 0.2]), "klein", max_iter=3)
     assert steps == 3                                                                          # vom kleinsten Punkt aus nicht konvergiert, aber begrenzt
     assert C.MAX_ITER >= 1000
+
+
+def test_iteration_cap_is_visible_in_the_step_count_so_the_app_can_warn():
+    """Erreicht die Iteration den Höchstwert, steht das in der Schrittzahl (die App zeigt dann einen Hinweis); sonst bleibt sie darunter."""
+    w = np.array([[0.0, 1.0], [1.0, 0.0]])
+    _, _, steps = A.clear(w, np.array([0.2, 0.2]), "klein", max_iter=3)
+    assert steps == 3
+    _, _, steps_full = A.clear(w, np.array([0.2, 0.2]), "gross")
+    assert steps_full < C.MAX_ITER

@@ -93,6 +93,7 @@ Im Ring macht schon ein Schock von 0,2 (das Doppelte des Puffers) mit Insolvenzk
 
 - **Eine Verrechnungsrunde ohne Zeit:** Die Demo rechnet den Endzustand, nicht den Ablauf; gleich große Firmen (Schuld 1), alle Schulden gleichrangig, keine Notverkäufe und keine Marktpreise.
 - **Insolvenzkosten vereinfacht:** Das Modell „zahlt $\alpha \cdot$ Mittel“ ist keine Nachbildung von Rogers und Veraart; Zahl und Lage der Verrechnungsvektoren hängen vom Modell ab.
+- **Hinweise in der App:** Gibt es mehrere Verrechnungsvektoren (Lücke zwischen größtem und kleinstem Fixpunkt mindestens 1e-9, etwa wenn eine geschlossene Gruppe ohne externe Mittel zurückbleibt: Ring, alle Firmen geschockt mit s = b), zeigt die App einen Hinweis und den größten. Erreicht die Iteration den Höchstwert von 200.000 Schritten, zeigt sie eine Warnung: dicht an einer Schwelle ist der Wert dann eine Näherung.
 - **Eindeutigkeit bei negativen externen Mitteln** ist ein Messbefund an Stichproben (Aufzählung, größter gegen kleinster Fixpunkt) und kein bewiesener Satz; sie gilt nicht allgemein (Gegenbeispiel: geschlossene Gruppe mit externen Mitteln 0, siehe oben). Die Sekundärquelle (Stachurski) nennt Eindeutigkeit bei positiven Schulden; ihre Voraussetzungen sind hier nicht geprüft.
 - **Nur n = 40 für die Sweeps** (Tabellen 1 und 4) und die genannten Netzformen; die Formeln der Tabellen 2 und 3 gelten für beliebiges n (geprüft für n = 10 bis 40).
 - **Synthetische Netze:** Die Quoten gelten für diese Netzformen und Parameter, nicht für echte Zahlungsnetze; „dicht ist bis zur Schwelle sicher“ gilt gegenüber Ring und Zufallsnetz, nicht gegenüber Kern–Rand (siehe oben).
@@ -106,7 +107,7 @@ Im Ring macht schon ein Schock von 0,2 (das Doppelte des Puffers) mit Insolvenzk
 - **Randfälle:** n = 2, eine Firma ohne Gläubiger, k = n, s = 0, genau auf dem Puffer, Reglergrenzen inklusive, Worst-Case bei n = 40 und b = 0,05.
 - **Verdikte** als reine Funktionen an handgesetzten Werten; **Presets, Layout, AppTest-Rauchtest** (jeder Button, jeder Regler an Minimum und Maximum), **Footer**, **Laufzeit-Importe**.
 - **Behauptungen:** `tests/test_claims.py` rechnet jede Zahl dieser Datei nach.
-- **Umfang:** 93 Tests, rund 130 Sekunden (AppTest, Orakel mit scipy); `tools/readme_rows.py` ist kein Test, sondern erzeugt die Tabellen, die `test_claims.py` prüft.
+- **Umfang:** 96 Tests, rund 130 Sekunden (AppTest, Orakel mit scipy); `tools/readme_rows.py` ist kein Test, sondern erzeugt die Tabellen, die `test_claims.py` prüft.
 - **Nicht gelaufen:** Mutationstests (seit 2026-10-28 nicht mehr Teil des Ablaufs); die Aussagenprüfung durch unabhängige Prüfer steht noch aus.
 
 ## Dateistruktur
