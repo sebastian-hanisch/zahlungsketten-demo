@@ -1,7 +1,6 @@
 # Zahlungsketten und Ausfallkaskaden: robust und zerbrechlich – Streamlit-Demo
 
-<!-- TODO nach dem Deploy: direkt hierher den Live-Link setzen (Leerzeile davor und danach):
-**[→ Demo live ausprobieren](https://sebastianhanisch-zahlungsketten-demo.streamlit.app/)** -->
+**[→ Demo live ausprobieren](https://sebastianhanisch-zahlungsketten-demo.streamlit.app/)**
 
 Stück 6 der Reihe **Spiele auf Netzen** in der „Konzepte“-Reihe für die Website „Sebastian Hanisch – Operations Research und Machine Learning“ (Vorgänger: [netzwerkspiel-demo](https://github.com/sebastian-hanisch/netzwerkspiel-demo) und [oeffentliche-gueter-netz-demo](https://github.com/sebastian-hanisch/oeffentliche-gueter-netz-demo); geplante Folge: Netzbildung unter Ausfallrisiko). Anders als die Fall-Demos zeigt sie **ein** Verfahren an einem wachsenden Beispiel: die **Verrechnung von Zahlungsketten** nach Eisenberg und Noe. Vehikel: ein synthetisches Netz von Firmen (Zulieferer, Spediteure, Frachtbörse), die einander Zahlungsziele schulden; einige verlieren externe Mittel. Keine Banken, keine Namen, keine Daten echter Firmen.
 
@@ -159,4 +158,4 @@ Gebaut mit Streamlit, Plotly und NumPy.
 
 ---
 
-Diese Demo ist Teil des Portfolios von [Sebastian Hanisch](https://sebastianhanisch.net) – Operations Research und Machine Learning ([Über mich](https://sebastianhanisch.net/ueber-mich.html)). Mehr zu den Demos: [Interaktive Demos](https://sebastianhanisch.net/demos.html).
+Diese Demo ist Teil des Portfolios von [Sebastian Hanisch](https://sebastianhanisch.net) – Operations Research und Machine Learning ([Über mich](https://sebastianhanisch.net/ueber-mich.html)). Mehr zur Reihe: [Spiele auf Netzen: vom Netzspiel zur Netzbildung](https://sebastianhanisch.net/konzepte-spiele-auf-netzen.html).

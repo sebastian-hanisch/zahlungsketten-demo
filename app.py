@@ -79,6 +79,19 @@ Weiter unten: vier Abschnitte **🔬 Experiment**, **🚧 Wo die Annahmen enden*
 """
 )
 
+# erklaerseite:einfach:start (erzeugt von tools/set_demo_explainer.py (Website-Repo) aus tools/content/explainers/zahlungsketten-erklaert.json, nicht von Hand ändern)
+with st.expander("💬 In einfachen Worten"):
+    st.markdown(
+        """
+Betriebe schulden einander Geld mit Zahlungsziel: Ein Verlader schuldet dem Spediteur, der Spediteur dem Subunternehmer. Verliert ein Betrieb Geld von außen, zahlt er seine Schulden nur zum Teil, und seine Gläubiger bekommen weniger, als sie eingeplant haben. Die **Verrechnung** legt fest, wer wie viel zahlt: Jeder Betrieb zahlt, was er hat, höchstens seine Schuld.
+
+Die Demo zeigt, **wie weit ein Ausfall läuft**. Das hängt von der Form des Netzes ab und vom **Puffer**, also dem Geld, das ein Betrieb über seine Schuld hinaus hat. Im Netz, in dem jeder jedem schuldet, fallen unterhalb einer **Schwelle** nur die direkt getroffenen Betriebe aus, darüber alle. Mit Kosten für einen Ausfall kippt sogar die einfache Kette. Alle Netze sind erzeugt, es gibt keine Daten echter Betriebe.
+
+[Ausführlich und verständlich erklärt, mit Fachteil](https://sebastianhanisch.net/zahlungsketten-erklaert.html)
+        """
+    )
+# erklaerseite:einfach:end
+
 with st.expander("So funktioniert die Verrechnung", expanded=True):
     st.markdown(
         """
@@ -208,6 +221,27 @@ st.markdown(
 st.markdown("---")
 
 with st.expander("📐 Mathematische Formulierung"):
+    # erklaerseite:lesehilfe:start (erzeugt von tools/set_demo_explainer.py (Website-Repo) aus tools/content/explainers/zahlungsketten-erklaert.json, nicht von Hand ändern)
+    st.markdown(
+        r"""
+**Lesehilfe.** Gegeben ist ein Netz von $n$ Firmen mit Schulden $W_{ij}$ (von $i$ an $j$), externen Mitteln $e_i$ und Puffer $b$; $k$ Firmen verlieren je $s$. Gesucht ist, wer wie viel zahlt ($p_i$) und welche Firmen ausfallen.
+
+| Symbol | Bedeutung |
+|---|---|
+| $W_{ij}$ | Schuld der Firma $i$ an Firma $j$ |
+| $L_i$ | gesamte Schuld der Firma $i$, $L_i = \sum_j W_{ij}$ (in der Demo 1) |
+| $\Pi_{ij}$ | Anteil der Schuld von $i$, der an $j$ geht, $\Pi_{ij} = W_{ij}/L_i$ |
+| $e_i$ | externe Mittel der Firma $i$ |
+| $b$ | Puffer über der Schuld |
+| $k,\ s$ | Zahl der geschockten Firmen und Schock je Firma |
+| $p_i$ | Zahlung der Firma $i$ (Verrechnungsvektor); ausgefallen, wenn $p_i < L_i$ |
+| $\alpha$ | Anteil ihrer Mittel, den eine ausfallende Firma noch zahlt |
+| $s^*$ | Schwelle des vollständigen Netzes, $s^* = b\,n/k$ |
+
+[Schritt für Schritt erklärt, mit Herleitung und Literatur](https://sebastianhanisch.net/zahlungsketten-erklaert.html#fachleute)
+        """
+    )
+    # erklaerseite:lesehilfe:end
     st.markdown(
         r"""
 **Schulden und Verrechnung.** $W_{ij} \ge 0$ ist die Schuld von $i$ an $j$, $L_i = \sum_j W_{ij}$, $\Pi_{ij} = W_{ij}/L_i$. Externe Mittel $e_i$. Ein **Verrechnungsvektor** $p \in [0, L]$ erfüllt
@@ -235,5 +269,5 @@ st.markdown("---")
 st.caption(
     "Diese Demo ist Teil des Portfolios von [Sebastian Hanisch](https://sebastianhanisch.net) – "
     "Operations Research und Machine Learning ([Über mich](https://sebastianhanisch.net/ueber-mich.html)). "
-    "Mehr zu den Demos: [Interaktive Demos](https://sebastianhanisch.net/demos.html)."
+    "Mehr zur Reihe: [Spiele auf Netzen: vom Netzspiel zur Netzbildung](https://sebastianhanisch.net/konzepte-spiele-auf-netzen.html)."
 )
