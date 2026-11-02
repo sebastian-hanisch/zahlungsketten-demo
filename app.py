@@ -73,7 +73,7 @@ st.markdown(
     """
 Firmen schulden einander **Zahlungsziele**. Verliert eine Firma externe Mittel, kann sie ihre Schulden nicht voll zahlen, ihre Gläubiger bekommen weniger und fallen vielleicht selbst aus. Die **Verrechnung** (Eisenberg und Noe)
 legt fest, wer wie viel zahlt: Jede Firma zahlt, was sie hat, höchstens ihre Schuld. Die Demo zeigt, **wie weit ein Ausfall läuft**, je nach Form des Netzes, und warum das **dichteste Netz** nur bis zu einer **Schwelle**
-das sicherste ist: Darunter fallen nur die geschockten Firmen aus, darüber alle. Mit Insolvenzkosten kippt sogar der Ring. Drittes Stück der Reihe **Spiele auf Netzen**; die Netze sind synthetisch, es gibt keine Daten echter Firmen.
+sicherer als Ring und Zufallsnetz ist: Darunter fallen nur die geschockten Firmen aus, darüber alle. Mit Insolvenzkosten kippt sogar der Ring. Stück 6 der Reihe **Spiele auf Netzen**; die Netze sind synthetisch, es gibt keine Daten echter Firmen.
 
 Weiter unten: vier Abschnitte **🔬 Experiment**, **🚧 Wo die Annahmen enden** und der Expander **📐 Mathematische Formulierung**.
 """
@@ -84,8 +84,8 @@ with st.expander("So funktioniert die Verrechnung", expanded=True):
         """
 1. **Die Schulden.** Firma $i$ schuldet Firma $j$ den Betrag $W_{ij}$; jede Firma schuldet insgesamt 1. Jede Firma hat externe Mittel $e_i$, mit einem **Puffer** $b$ über dem, was sie braucht, um ihre Schuld zu decken.
 2. **Der Schock.** $k$ Firmen verlieren je $s$ ihrer externen Mittel; sie können dann nicht mehr voll zahlen.
-3. **Die Verrechnung.** Jede Firma zahlt $p_i = \\min(L_i, \\max(e_i + \\sum_j \\Pi_{ji} p_j, 0))$: ihre Mittel plus das, was sie von ihren Schuldnern bekommt, höchstens ihre Schuld $L_i$. Der **größte Fixpunkt** (Iteration von $p = L$ aus) ist der Verrechnungsvektor; er ist eindeutig.
-4. **Die Ausbreitung.** Eine Firma fällt aus, wenn $p_i < L_i$. Jede Firma fängt höchstens ihren Puffer auf und reicht den Rest weiter.
+3. **Die Verrechnung.** Jede Firma zahlt $p_i = \\min(L_i, \\max(e_i + \\sum_j \\Pi_{ji} p_j, 0))$: ihre Mittel plus das, was sie von ihren Schuldnern bekommt, höchstens ihre Schuld $L_i$. Der **größte Fixpunkt** (Iteration von $p = L$ aus) ist der Verrechnungsvektor; ohne Insolvenzkosten ist er in den meisten Konstellationen eindeutig.
+4. **Die Ausbreitung.** Eine Firma fällt aus, wenn $p_i < L_i$. Eine Firma fängt höchstens ihren Puffer plus ihre überschüssigen Forderungen auf und reicht den Rest weiter.
         """
     )
 
@@ -200,7 +200,7 @@ st.markdown(
 | **Alle Schulden gleichrangig, alle Firmen gleich groß** (Schuld 1) | Bei verschieden großen Firmen verschiebt sich die Schwelle; die Formeln gelten nur für diese Netze. | – |
 | **Keine Notverkäufe, keine Marktpreise** | Wer Vermögen verkaufen muss, drückt den Preis und schadet anderen: ein weiterer Kanal, der hier fehlt. | – |
 | **Insolvenzkosten vereinfacht** (α · Mittel) | Das ist keine Nachbildung des Modells von Rogers und Veraart; Zahl und Lage der Verrechnungsvektoren hängen vom Modell ab. | – |
-| **Synthetische Netze, feste Parameter** | Echte Zahlungsnetze sind weder Ring noch vollständig; die Aussage „dicht ist bis zur Schwelle am sichersten“ gilt hier gegenüber dem Ring. | – |
+| **Synthetische Netze, feste Parameter** | Echte Zahlungsnetze sind weder Ring noch vollständig; die Aussage „dicht ist bis zur Schwelle am sichersten“ gilt hier gegenüber Ring und Zufallsnetz, nicht gegenüber Kern–Rand. | – |
 | **Festes Netz** | Wer sich neu verbindet, ändert das Spiel: Das Netz entsteht hier nicht. | Stück 5 (Netzbildung unter Ausfallrisiko) |
 """
 )
@@ -212,7 +212,7 @@ with st.expander("📐 Mathematische Formulierung"):
         r"""
 **Schulden und Verrechnung.** $W_{ij} \ge 0$ ist die Schuld von $i$ an $j$, $L_i = \sum_j W_{ij}$, $\Pi_{ij} = W_{ij}/L_i$. Externe Mittel $e_i$. Ein **Verrechnungsvektor** $p \in [0, L]$ erfüllt
 $p_i = \min\bigl(L_i,\ \max(e_i + \sum_j \Pi_{ji} p_j,\ 0)\bigr)$. Die Abbildung ist monoton; der größte Fixpunkt ergibt sich durch Iteration von $p = L$ aus. Für $e \ge 0$ löst der größte Fixpunkt das LP
-$\max \sum_i p_i$ unter $p \le L$, $p \le e + \Pi^\top p$ (Eisenberg und Noe 2001); in der Demo ist er auch bei negativen $e$ (große Schocks) eindeutig (Messbefund, durch kleinsten Fixpunkt geprüft).
+$\max \sum_i p_i$ unter $p \le L$, $p \le e + \Pi^\top p$ (Eisenberg und Noe 2001); in den geprüften Netzen ist er auch bei negativen $e$ (große Schocks) eindeutig (Messbefund an Stichproben, durch kleinsten Fixpunkt geprüft); mit externen Mitteln 0 für eine geschlossene Gruppe (z. B. alle Firmen eines Rings geschockt mit $s = b$) gibt es mehrere Fixpunkte.
 
 **Aufbau der Demo.** Jede Firma schuldet insgesamt 1; $e_i = \max(1 - \text{Forderungen}_i,\ 0) + b$ (ohne Schock fällt niemand aus). Geschockte Firmen: $e_i \leftarrow e_i - s$.
 

@@ -3,7 +3,7 @@
 <!-- TODO nach dem Deploy: direkt hierher den Live-Link setzen (Leerzeile davor und danach):
 **[→ Demo live ausprobieren](https://sebastianhanisch-zahlungsketten-demo.streamlit.app/)** -->
 
-Drittes Stück der Reihe **Spiele auf Netzen** in der „Konzepte“-Reihe für die Website „Sebastian Hanisch – Operations Research und Machine Learning“ (Vorgänger: [netzwerkspiel-demo](https://github.com/sebastian-hanisch/netzwerkspiel-demo) und [oeffentliche-gueter-netz-demo](https://github.com/sebastian-hanisch/oeffentliche-gueter-netz-demo); geplante Folge: Netzbildung unter Ausfallrisiko). Anders als die Fall-Demos zeigt sie **ein** Verfahren an einem wachsenden Beispiel: die **Verrechnung von Zahlungsketten** nach Eisenberg und Noe. Vehikel: ein synthetisches Netz von Firmen (Zulieferer, Spediteure, Frachtbörse), die einander Zahlungsziele schulden; einige verlieren externe Mittel. Keine Banken, keine Namen, keine Daten echter Firmen.
+Stück 6 der Reihe **Spiele auf Netzen** in der „Konzepte“-Reihe für die Website „Sebastian Hanisch – Operations Research und Machine Learning“ (Vorgänger: [netzwerkspiel-demo](https://github.com/sebastian-hanisch/netzwerkspiel-demo) und [oeffentliche-gueter-netz-demo](https://github.com/sebastian-hanisch/oeffentliche-gueter-netz-demo); geplante Folge: Netzbildung unter Ausfallrisiko). Anders als die Fall-Demos zeigt sie **ein** Verfahren an einem wachsenden Beispiel: die **Verrechnung von Zahlungsketten** nach Eisenberg und Noe. Vehikel: ein synthetisches Netz von Firmen (Zulieferer, Spediteure, Frachtbörse), die einander Zahlungsziele schulden; einige verlieren externe Mittel. Keine Banken, keine Namen, keine Daten echter Firmen.
 
 ## Warum dieses Problem
 
@@ -13,7 +13,7 @@ Wer seine Rechnung nicht zahlt, schwächt seine Gläubiger. Ob daraus eine Kette
 
 - **Die erste Formel für die Schwelle des vollständigen Netzes war falsch.** Der Plan nannte $b + b(n-1)/k$ und übersah, dass auch die anderen geschockten Firmen weniger zahlen. Richtig ist **$s^* = b\,n/k$**, und es gibt eine Kaskade nur, wenn $k > b\,(n-1)$ (Tabelle 3, geprüft in 200 von 200 Fällen).
 - **Die Messgröße „Fehlbetrag / Schock“ ist verworfen.** Sie zählt dieselbe Schuld auf jeder Stufe der Kette erneut und ist kein Verlustmaß. Gemessen wird der **Anteil ausgefallener Firmen**.
-- **„Dicht ist unterhalb der Schwelle am sichersten“ gilt nur gegenüber dem Ring.** Das Kern–Rand-Netz verliert bei vier Schocks 8,7 % und damit weniger als das vollständige Netz (10,0 %), selbst oberhalb von dessen Schwelle (Tabelle 1): Einige Firmen haben dort mehr externe Mittel (bei wenigen Forderungen ist $e = 1 - 	ext{Forderungen} + b$ größer), und die Ausfälle bleiben bei den geschockten Firmen.
+- **„Dicht ist unterhalb der Schwelle am sichersten“ gilt gegenüber Ring und Zufallsnetz, nicht gegenüber Kern–Rand.** Das Kern–Rand-Netz verliert bei vier Schocks 8,7 % und damit weniger als das vollständige Netz (10,0 %), selbst oberhalb von dessen Schwelle (Tabelle 1); bei größerem Puffer kann auch das Zufallsnetz besser abschneiden. Die Kernfirmen halten Forderungen von mehreren Einheiten bei Schuld 1: Ein Schock auf sie wird durch Zahlungseingänge aufgefangen, nur geschockte Randfirmen fallen aus.
 
 ## Modell
 
@@ -33,9 +33,9 @@ Alle Zahlen sind in `tests/test_claims.py` nachgerechnet; die Tabellen werden do
 
 **Standardeinstellung** (vollständiges Netz, n = 40, b = 0,1, k = 4, s = 0,9, Seed 35): Die Verrechnung konvergiert nach 13 Schritten, 4 von 40 Firmen fallen aus, nur die geschockten. Bei s = 1,2 fallen alle 40 aus.
 
-**Verrechnungsvektor.** In 60 von 60 kleinen Zufallsnetzen (3 bis 5 Firmen, auch mit negativen externen Mitteln) steht der Iterationswert in der Liste, die die **Aufzählung aller Zustandsmuster** liefert (zahlt nichts / einen Teil / voll, je Muster ein lineares System); bei 40 von 40 Netzen, in denen jede Firma etwas schuldet, ist dieser Vektor **der einzige**. Gegen das LP von Eisenberg und Noe (e ≥ 0) stimmt er in 60 von 60 Netzen auf 10⁻⁸ überein; größter und kleinster Fixpunkt sind in 80 von 80 Netzen gleich, auch mit negativen e.
+**Verrechnungsvektor.** In 60 von 60 kleinen Zufallsnetzen (3 bis 5 Firmen, auch mit negativen externen Mitteln) steht der Iterationswert in der Liste, die die **Aufzählung aller Zustandsmuster** liefert (zahlt nichts / einen Teil / voll, je Muster ein lineares System); bei 40 von 40 Netzen, in denen jede Firma etwas schuldet, ist dieser Vektor **der einzige**. Gegen das LP von Eisenberg und Noe (e ≥ 0) stimmt er in 60 von 60 Netzen auf 10⁻⁸ überein; größter und kleinster Fixpunkt sind in 80 von 80 Netzen gleich, auch mit negativen e. Das sind Stichproben mit festen Seeds, kein Beweis: Hat eine geschlossene Gruppe von Firmen externe Mittel von 0 (z. B. alle Firmen eines Rings oder vollständigen Netzes geschockt mit s = b), unterscheiden sich größter und kleinster Fixpunkt um 1,0.
 
-**Tabelle 1: Netzform gegen Schockstärke.** Anteil ausgefallener Firmen in %, Mittel über 50 Läufe.
+**Tabelle 1: Netzform gegen Schockstärke.** Anteil ausgefallener Firmen in %, Mittel über 50 Läufe (Stichprobenwerte: beim Ring schwanken sie um etwa 1 bis 2 Punkte, die Reihenfolge der Netzformen bleibt).
 
 | k | Netzform | s = 0,1 | 0,5 | 0,9 | 1,0 | 1,1 | 1,5 | 2,0 |
 |---|---|---|---|---|---|---|---|---|
@@ -48,7 +48,7 @@ Alle Zahlen sind in `tests/test_claims.py` nachgerechnet; die Tabellen werden do
 | 4 | Kern–Rand | 0,0 % | 8,7 % | 8,7 % | 8,7 % | 8,7 % | 8,7 % | 8,7 % |
 | 4 | vollständig | 0,0 % | 10,0 % | 10,0 % | 10,0 % | 100,0 % | 100,0 % | 100,0 % |
 
-Das ist der Befund „robust und zerbrechlich“ (Acemoglu, Ozdaglar, Tahbaz-Salehi 2015): Im vollständigen Netz fallen bei einem Schock nie mehr als die geschockten Firmen aus (2,5 % = 1 von 40), bei vier Schocks bis s = 1,0 nur diese vier (10,0 %), ab s = 1,1 alle. Der Ring verliert nie alles (höchstens 71,7 %), dafür schon bei kleinen Schocks viel.
+Das ist der Befund „robust und zerbrechlich“ (Acemoglu, Ozdaglar, Tahbaz-Salehi 2015): Im vollständigen Netz fallen bei einem Schock nie mehr als die geschockten Firmen aus (2,5 % = 1 von 40), bei vier Schocks bis s = 1,0 nur diese vier (10,0 %), ab s = 1,1 alle. Der Ring verliert bei vier zufällig gewählten Schocks im Mittel höchstens etwa 70 % (größter Mittelwert der Tabelle: 71,7 %), dafür schon bei kleinen Schocks viel; bei vier gleichmäßig verteilten Schocks (Firmen 0, 10, 20, 30) und s = 2,0 fallen alle 40 aus.
 
 **Tabelle 2: Ring, ein Schock.** Ausfälle nach der Formel ⌈min(s − b, 1)/b⌉ und nach der Verrechnung (n = 40, b = 0,1); jede Firma fängt den Puffer $b$ des Fehlbetrags auf und reicht den Rest weiter.
 
@@ -79,7 +79,7 @@ Auf einem Raster von 1 724 Schockstärken (Schritt 0,005, b = 0,05; 0,1; 0,2) st
 
 Geprüft in 200 von 200 Fällen (n = 10, 20, 30, 40; b = 0,05 bis 0,3; k = 1 bis n/2): in 150 gibt es eine Kaskade (knapp unter $s^*$ nur die $k$ geschockten Firmen, knapp darüber alle), in 50 fallen auch bei $s = 50$ nur die geschockten aus. Der Fehlbetrag einer geschockten Firma ist unterhalb des Deckels 1 genau $(s - b)(n-1)/(n-k)$.
 
-**Tabelle 4: Insolvenzkosten** (α = 0,8; k = 4). Ausfallanteil ohne / mit Kosten in %; letzte Spalte: Zahl der Netze mit mehreren Verrechnungsvektoren unter 100 Zufallsnetzen mit n = 20, drei Schocks, s = 0,9, b = 0,1.
+**Tabelle 4: Insolvenzkosten** (α = 0,8; k = 4). Ausfallanteil ohne / mit Kosten in %; letzte Spalte: Zahl der Netze mit mehreren Verrechnungsvektoren unter 100 Zufallsnetzen mit n = 20, drei Schocks, s = 0,9, b = 0,1. Ring und vollständiges Netz sind fest, die 100 Läufe unterscheiden sich dort nur in den geschockten Firmen.
 
 | Netzform | s = 0,2 | 0,5 | 1,0 | 2,0 | mehrere Vektoren |
 |---|---|---|---|---|---|
@@ -88,26 +88,26 @@ Geprüft in 200 von 200 Fällen (n = 10, 20, 30, 40; b = 0,05 bis 0,3; k = 1 bis
 | Kern–Rand | 8,7 % / 8,7 % | 8,7 % / 8,7 % | 8,7 % / 8,7 % | 8,7 % / 8,7 % | 0 von 100 |
 | vollständig | 10,0 % / 10,0 % | 10,0 % / 10,0 % | 10,0 % / 100,0 % | 100,0 % / 100,0 % | 0 von 100 |
 
-Im Ring macht schon ein Schock von 0,2 (das Doppelte des Puffers) mit Insolvenzkosten alle Firmen zahlungsunfähig; im vollständigen Netz sinkt die Schwelle unter 1,0. Mit Kosten ist der Verrechnungsvektor nicht mehr eindeutig, aber nicht in jeder Netzform.
+Im Ring macht schon ein Schock von 0,2 (das Doppelte des Puffers) mit Insolvenzkosten alle Firmen zahlungsunfähig; im vollständigen Netz sinkt die Schwelle geringfügig (α = 0,8: etwa 0,994 statt 1,0). Mit Kosten ist der Verrechnungsvektor nicht mehr eindeutig, aber nicht in jeder Netzform.
 
 ## Ehrliche Grenzen
 
 - **Eine Verrechnungsrunde ohne Zeit:** Die Demo rechnet den Endzustand, nicht den Ablauf; gleich große Firmen (Schuld 1), alle Schulden gleichrangig, keine Notverkäufe und keine Marktpreise.
 - **Insolvenzkosten vereinfacht:** Das Modell „zahlt $\alpha \cdot$ Mittel“ ist keine Nachbildung von Rogers und Veraart; Zahl und Lage der Verrechnungsvektoren hängen vom Modell ab.
-- **Eindeutigkeit bei negativen externen Mitteln** ist ein Messbefund (Aufzählung, größter gegen kleinster Fixpunkt) und kein bewiesener Satz; die Sekundärquelle (Stachurski) nennt Eindeutigkeit bei positiven Schulden immer.
+- **Eindeutigkeit bei negativen externen Mitteln** ist ein Messbefund an Stichproben (Aufzählung, größter gegen kleinster Fixpunkt) und kein bewiesener Satz; sie gilt nicht allgemein (Gegenbeispiel: geschlossene Gruppe mit externen Mitteln 0, siehe oben). Die Sekundärquelle (Stachurski) nennt Eindeutigkeit bei positiven Schulden; ihre Voraussetzungen sind hier nicht geprüft.
 - **Nur n = 40 für die Sweeps** (Tabellen 1 und 4) und die genannten Netzformen; die Formeln der Tabellen 2 und 3 gelten für beliebiges n (geprüft für n = 10 bis 40).
-- **Synthetische Netze:** Die Quoten gelten für diese Netzformen und Parameter, nicht für echte Zahlungsnetze; „dicht ist bis zur Schwelle sicher“ gilt gegenüber dem Ring (siehe oben).
+- **Synthetische Netze:** Die Quoten gelten für diese Netzformen und Parameter, nicht für echte Zahlungsnetze; „dicht ist bis zur Schwelle sicher“ gilt gegenüber Ring und Zufallsnetz, nicht gegenüber Kern–Rand (siehe oben).
 - **Literatur:** Alle Angaben beruhen auf Titel, Abstract und Sekundärquellen, nicht auf Volltexten.
 
 ## Verifikation
 
 - **Kern:** Verrechnung gegen Handrechnung (zwei Firmen; Ring mit 3 Firmen: p = (0; 0,1; 0,2); Kette mit einer Firma ohne Schulden), Prüfer, Insolvenzkosten (n = 2 von Hand).
 - **Orakel (anderer Rechenweg):** Aufzählung aller Zustandsmuster mit linearem System je Muster (kein Iterieren), das LP von Eisenberg und Noe (`scipy`), Iteration von beiden Seiten, Ring-Formel gegen die Verrechnung auf einem Raster und gegen ein zweites, schleifenbasiertes Argument, Schwellenformel des vollständigen Netzes gegen 200 Fälle, Fehlbetragsformel $(s-b)(n-1)/(n-k)$.
-- **Eigenschaftstests:** Zahlung zwischen 0 und Schuld, ohne Schock kein Ausfall, Zahlung steigt mit den externen Mitteln, Ausfälle steigen mit Schock und Zahl der Schocks und fallen mit dem Puffer, Umbenennen der Firmen, Skalierung aller Beträge, Insolvenzkosten senken nie die Zahlungen, ohne Kosten eindeutig, Ring verliert nie alle, das vollständige Netz schon.
+- **Eigenschaftstests:** Zahlung zwischen 0 und Schuld, ohne Schock kein Ausfall, Zahlung steigt mit den externen Mitteln, Ausfälle steigen mit Schock und Zahl der Schocks und fallen mit dem Puffer, Umbenennen der Firmen, Skalierung aller Beträge, Insolvenzkosten senken nie die Zahlungen, ohne Kosten eindeutig (in den getesteten Netzen), Ring verliert in den getesteten Läufen nicht alle Firmen, das vollständige Netz schon.
 - **Randfälle:** n = 2, eine Firma ohne Gläubiger, k = n, s = 0, genau auf dem Puffer, Reglergrenzen inklusive, Worst-Case bei n = 40 und b = 0,05.
 - **Verdikte** als reine Funktionen an handgesetzten Werten; **Presets, Layout, AppTest-Rauchtest** (jeder Button, jeder Regler an Minimum und Maximum), **Footer**, **Laufzeit-Importe**.
 - **Behauptungen:** `tests/test_claims.py` rechnet jede Zahl dieser Datei nach.
-- **Umfang:** 93 Tests, rund drei Minuten (AppTest, Orakel mit scipy); `tools/readme_rows.py` ist kein Test, sondern erzeugt die Tabellen, die `test_claims.py` prüft.
+- **Umfang:** 93 Tests, rund 130 Sekunden (AppTest, Orakel mit scipy); `tools/readme_rows.py` ist kein Test, sondern erzeugt die Tabellen, die `test_claims.py` prüft.
 - **Nicht gelaufen:** Mutationstests (seit 2026-10-28 nicht mehr Teil des Ablaufs); die Aussagenprüfung durch unabhängige Prüfer steht noch aus.
 
 ## Dateistruktur

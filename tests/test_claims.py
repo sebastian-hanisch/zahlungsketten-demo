@@ -129,7 +129,7 @@ def test_structure_claims_of_the_readme():
     assert comp[1.0] == 10.0 and comp[1.1] == 100.0
     kern = {r["s"]: r["mean"] for r in forms4["kernrand"]}
     assert kern[0.5] == pytest.approx(8.7, abs=0.05) and kern[0.5] < comp[0.5]
-    for part in ("höchstens 71,7 %", "bis s = 1,0 nur diese vier (10,0 %)", "ab s = 1,1 alle", "8,7 % und damit weniger als das vollständige Netz (10,0 %)"):
+    for part in ("im Mittel höchstens etwa 70 % (größter Mittelwert der Tabelle: 71,7 %)", "bis s = 1,0 nur diese vier (10,0 %)", "ab s = 1,1 alle", "8,7 % und damit weniger als das vollständige Netz (10,0 %)"):
         assert part in README, part
 
 
